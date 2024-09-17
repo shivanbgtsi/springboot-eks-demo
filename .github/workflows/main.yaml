@@ -1,0 +1,17 @@
+name: Cloud Custodian Policies
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cloud-custodian:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        run: echo 'test'
