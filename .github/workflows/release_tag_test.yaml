@@ -14,11 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Git for tagging
-        run: |
-          git config user.name "Shivanagouda"
-          git config user.email "shivanagoudabg@github.com"
-
       - name: Create a version tag
         run: |
           # Define the tag based on PR merge or any other logic
