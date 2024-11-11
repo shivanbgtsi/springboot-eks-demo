@@ -1,0 +1,34 @@
+name: Fetch Previous Tags
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  fetch-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Fetch all tags
+        run: |
+          git fetch --tags
+          echo "Tags fetched!"
+
+      - name: List all tags
+        run: |
+          git tag -l | sort -V
+          
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          previous_tag=$(git tag --sort=-v:refname | sed -n '2p')
+          echo "Previous Tag: $previous_tag"
+          echo "previous_tag=$previous_tag" >> $GITHUB_ENV
+
+      - name: Use previous tag
+        run: |
+          echo "Previous Tag is: ${{ env.previous_tag }}"
