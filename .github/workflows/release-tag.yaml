@@ -3,7 +3,7 @@ name: Release Versioning on Merge
 on:
   push:
     branches:
-      - main  # Change this to your default branch if it's different
+      - main  
 
 jobs:
   release:
