@@ -13,13 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Fetch all tags
+        run: git fetch --tags
+
       - name: Get the current version
         id: get_version
         run: |
-          # Fetch all tags
-          git fetch --tags
-          # Get the latest version tag
-          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          # Attempt to get the latest version tag
+          LATEST_TAG=$(git tag --sort=-creatordate | head -n 1 || echo "none")
           echo "Latest tag is: $LATEST_TAG"
           echo "::set-output name=latest::$LATEST_TAG"
 
@@ -30,7 +31,7 @@ jobs:
           VERSION=${{ steps.get_version.outputs.latest }}
           
           # If there is no version yet, start at 1.0.0
-          if [[ -z "$VERSION" ]]; then
+          if [[ "$VERSION" == "none" ]]; then
             NEW_VERSION="1.0.0"
             echo "No previous version found. Starting with version: $NEW_VERSION"
           else
